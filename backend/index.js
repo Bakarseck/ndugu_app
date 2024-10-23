@@ -3,7 +3,7 @@ const Web3 = require('web3');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const app = express();
-const port = 3000;
+const port = 4000;
 
 const users = []; // In-memory array to store users for simplicity (use a database in production)
 
