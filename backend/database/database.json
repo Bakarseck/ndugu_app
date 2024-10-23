@@ -1,0 +1,11 @@
+{
+    "users": {
+        "testuser": {
+            "username": "testuser",
+            "password": "$2b$10$hflvUI2K7ct2ilhfW/jxK.Wk5AqH0RuSYDFirt2S.OzBwxmGtmrRe",
+            "dob": "1990-01-01",
+            "address": "123 Street Name",
+            "email": "test@example.com"
+        }
+    }
+}

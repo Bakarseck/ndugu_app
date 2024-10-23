@@ -1,20 +1,14 @@
 const express = require('express');
-// const Web3 = require('web3');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const JsonDB = require('litejsondb');
 const app = express();
 const port = 4000;
 
-const users = []; // In-memory array to store users for simplicity (use a database in production)
+const db = new JsonDB('database.json');
 
-const JWT_SECRET = 'your_jwt_secret_key'; // Change this to something more secure
+const JWT_SECRET = 'your_jwt_secret_key';
 const saltRounds = 10;
-
-// // Web3 Configuration (same as before)
-// const web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));
-// const contractABI = [/* ABI here */];
-// const contractAddress = 'Contract_address_here';
-// const traceabilityContract = new web3.eth.Contract(contractABI, contractAddress);
 
 app.use(express.json());
 
@@ -26,14 +20,15 @@ app.post('/ussd/register', async (req, res) => {
         return res.status(400).json({ message: 'Passwords do not match' });
     }
 
-    const userExists = users.find(user => user.username === username || user.email === email);
+    const userExists = db.getData(`users/${username}`);
     if (userExists) {
         return res.status(400).json({ message: 'User already exists' });
     }
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const newUser = { username, password: hashedPassword, dob, address, email };
-    users.push(newUser);
+
+    db.setData(`users/${username}`, newUser); // Save user in the database
 
     res.status(200).json({ message: 'User registered successfully' });
 });
@@ -42,7 +37,7 @@ app.post('/ussd/register', async (req, res) => {
 app.post('/ussd/login', async (req, res) => {
     const { username, password } = req.body;
 
-    const user = users.find(user => user.username === username);
+    const user = db.getData(`users/${username}`);
     if (!user) {
         return res.status(400).json({ message: 'User not found' });
     }
@@ -71,19 +66,6 @@ app.get('/ussd/protected', (req, res) => {
         res.status(401).json({ message: 'Invalid token' });
     }
 });
-
-// // Your existing product-related routes remain the same
-// app.post('/api/products', async (req, res) => {
-//     const { id, name, origin, status } = req.body;
-//     const accounts = await web3.eth.getAccounts();
-//     await traceabilityContract.methods.addProduct(id, name, origin, status).send({ from: accounts[0] });
-//     res.send('Product added successfully');
-// });
-
-// app.get('/api/products/:id', async (req, res) => {
-//     const product = await traceabilityContract.methods.getProduct(req.params.id).call();
-//     res.send(product);
-// });
 
 app.listen(port, () => {
     console.log(`Ndugu App Backend running on http://localhost:${port}`);

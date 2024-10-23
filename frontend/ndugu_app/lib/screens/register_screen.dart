@@ -24,7 +24,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _isLoading = true;
     });
 
-    const url = 'http://localhost:3000/register';
+    const url = 'https://e-ceddo.com/ussd/register';
     try {
       final response = await http.post(
         Uri.parse(url),
