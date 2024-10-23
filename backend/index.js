@@ -1,5 +1,5 @@
 const express = require('express');
-const Web3 = require('web3');
+// const Web3 = require('web3');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const app = express();
@@ -10,11 +10,11 @@ const users = []; // In-memory array to store users for simplicity (use a databa
 const JWT_SECRET = 'your_jwt_secret_key'; // Change this to something more secure
 const saltRounds = 10;
 
-// Web3 Configuration (same as before)
-const web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));
-const contractABI = [/* ABI here */];
-const contractAddress = 'Contract_address_here';
-const traceabilityContract = new web3.eth.Contract(contractABI, contractAddress);
+// // Web3 Configuration (same as before)
+// const web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));
+// const contractABI = [/* ABI here */];
+// const contractAddress = 'Contract_address_here';
+// const traceabilityContract = new web3.eth.Contract(contractABI, contractAddress);
 
 app.use(express.json());
 
@@ -72,18 +72,18 @@ app.get('/protected', (req, res) => {
     }
 });
 
-// Your existing product-related routes remain the same
-app.post('/api/products', async (req, res) => {
-    const { id, name, origin, status } = req.body;
-    const accounts = await web3.eth.getAccounts();
-    await traceabilityContract.methods.addProduct(id, name, origin, status).send({ from: accounts[0] });
-    res.send('Product added successfully');
-});
+// // Your existing product-related routes remain the same
+// app.post('/api/products', async (req, res) => {
+//     const { id, name, origin, status } = req.body;
+//     const accounts = await web3.eth.getAccounts();
+//     await traceabilityContract.methods.addProduct(id, name, origin, status).send({ from: accounts[0] });
+//     res.send('Product added successfully');
+// });
 
-app.get('/api/products/:id', async (req, res) => {
-    const product = await traceabilityContract.methods.getProduct(req.params.id).call();
-    res.send(product);
-});
+// app.get('/api/products/:id', async (req, res) => {
+//     const product = await traceabilityContract.methods.getProduct(req.params.id).call();
+//     res.send(product);
+// });
 
 app.listen(port, () => {
     console.log(`Ndugu App Backend running on http://localhost:${port}`);
