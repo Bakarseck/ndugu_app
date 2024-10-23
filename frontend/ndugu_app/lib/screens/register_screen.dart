@@ -13,10 +13,10 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _dobController = TextEditingController();
   final _addressController = TextEditingController();
   final _emailController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  DateTime? _selectedDate; // Stockage de la date sélectionnée
   bool _isLoading = false;
 
   Future<void> _register() async {
@@ -34,7 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         body: jsonEncode({
           'username': _usernameController.text,
           'password': _passwordController.text,
-          'dob': _dobController.text,
+          'dob': _selectedDate != null ? _selectedDate.toString() : '',
           'address': _addressController.text,
           'email': _emailController.text,
           'confirmPassword': _confirmPasswordController.text,
@@ -58,6 +58,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
     } finally {
       setState(() {
         _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (pickedDate != null && pickedDate != _selectedDate) {
+      setState(() {
+        _selectedDate = pickedDate;
       });
     }
   }
@@ -131,15 +145,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    // Date of Birth
-                    TextField(
-                      controller: _dobController,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white.withOpacity(0.8),
-                        hintText: 'Date of Birth',
-                        border: OutlineInputBorder(
+                    // Date of Birth (Picker)
+                    GestureDetector(
+                      onTap: () => _selectDate(context),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16.0, horizontal: 12.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.8),
+                          border: Border.all(
+                            color: Colors.grey,
+                          ),
                           borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          _selectedDate != null
+                              ? _selectedDate.toString()
+                              : 'Select Date of Birth',
+                          style: const TextStyle(
+                            color: Colors.black87,
+                          ),
                         ),
                       ),
                     ),
@@ -187,8 +212,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     _isLoading
                         ? const Center(child: CircularProgressIndicator())
                         : ElevatedButton(
-                            onPressed:
-                                _register, // Appel à l'API pour l'inscription
+                            onPressed: _register,
                             style: ElevatedButton.styleFrom(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 16.0),

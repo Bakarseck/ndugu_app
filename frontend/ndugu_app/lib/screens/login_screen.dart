@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class LoginScreen extends StatefulWidget {
@@ -34,8 +35,15 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (response.statusCode == 200) {
-        // Si la connexion est réussie
         final data = jsonDecode(response.body);
+        final String jwt =
+            data['token'];
+
+        // Sauvegarde le JWT dans les shared_preferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('jwt', jwt);
+
+        // Redirige vers la page d'accueil
         // ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, '/home');
       } else {
@@ -99,8 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         color: Colors.white70,
                         fontSize: 16,
-                        decoration: TextDecoration
-                            .underline,
+                        decoration: TextDecoration.underline,
                       ),
                     ),
                   ),
