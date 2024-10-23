@@ -19,7 +19,7 @@ const saltRounds = 10;
 app.use(express.json());
 
 // Register Endpoint
-app.post('/register', async (req, res) => {
+app.post('/ussd/register', async (req, res) => {
     const { username, password, dob, address, email, confirmPassword } = req.body;
 
     if (password !== confirmPassword) {
@@ -39,7 +39,7 @@ app.post('/register', async (req, res) => {
 });
 
 // Login Endpoint
-app.post('/login', async (req, res) => {
+app.post('/ussd/login', async (req, res) => {
     const { username, password } = req.body;
 
     const user = users.find(user => user.username === username);
@@ -57,7 +57,7 @@ app.post('/login', async (req, res) => {
 });
 
 // Example protected route
-app.get('/protected', (req, res) => {
+app.get('/ussd/protected', (req, res) => {
     const token = req.headers['authorization'];
 
     if (!token) {
