@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
     } catch (e) {
-      print(e);
+      debugPrint('Erreur de statut HTTP: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Erreur lors de la connexion au serveur')),
       );
