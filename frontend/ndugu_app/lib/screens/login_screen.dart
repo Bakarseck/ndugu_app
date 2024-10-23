@@ -46,6 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Erreur lors de la connexion au serveur')),
       );
@@ -88,12 +89,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'sign up to continue',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 16,
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/register');
+                    },
+                    child: const Text(
+                      'sign up to continue',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 16,
+                        decoration: TextDecoration
+                            .underline,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -153,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(width: 8),
                       TextButton(
                         onPressed: () {
-                          // Action pour s'inscrire
+                          Navigator.pushNamed(context, '/register');
                         },
                         child: const Text(
                           'Signup!',

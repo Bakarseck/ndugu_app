@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const cors = require('cors');
 const JsonDB = require('litejsondb');
 const app = express();
 const port = 4000;
@@ -11,6 +12,7 @@ const JWT_SECRET = 'your_jwt_secret_key';
 const saltRounds = 10;
 
 app.use(express.json());
+app.use(cors());
 
 // Register Endpoint
 app.post('/ussd/register', async (req, res) => {
