@@ -16,59 +16,68 @@ app.use(cors());
 
 // Register Endpoint
 app.post('/ussd/register', async (req, res) => {
-    const { username, password, dob, address, email, confirmPassword } = req.body;
+     const { username, password, dob, address, email, confirmPassword, role } = req.body; // Ajout du rôle
 
-    if (password !== confirmPassword) {
-        return res.status(400).json({ message: 'Passwords do not match' });
-    }
+     // Vérifier que le rôle est soit 'client' soit 'producteur'
+     if (role !== 'client' && role !== 'producteur') {
+          return res.status(400).json({ message: 'Invalid role. Must be either client or producteur' });
+     }
 
-    const userExists = db.getData(`users/${username}`);
-    if (userExists) {
-        return res.status(400).json({ message: 'User already exists' });
-    }
+     if (password !== confirmPassword) {
+          return res.status(400).json({ message: 'Passwords do not match' });
+     }
 
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    const newUser = { username, password: hashedPassword, dob, address, email };
+     const userExists = db.getData(`users/${username}`);
+     if (userExists) {
+          return res.status(400).json({ message: 'User already exists' });
+     }
 
-    db.setData(`users/${username}`, newUser); // Save user in the database
+     const hashedPassword = await bcrypt.hash(password, saltRounds);
+     const newUser = { username, password: hashedPassword, dob, address, email, role };
 
-    res.status(200).json({ message: 'User registered successfully' });
+     db.setData(`users/${username}`, newUser);
+
+     const token = jwt.sign({ username: username, role: role }, JWT_SECRET);
+     res.status(200).json({ message: 'User registered successfully', token});
 });
+
 
 // Login Endpoint
 app.post('/ussd/login', async (req, res) => {
-    const { username, password } = req.body;
+     const { username, password } = req.body;
 
-    const user = db.getData(`users/${username}`);
-    if (!user) {
-        return res.status(400).json({ message: 'User not found' });
-    }
+     const user = db.getData(`users/${username}`);
+     if (!user) {
+          return res.status(400).json({ message: 'User not found' });
+     }
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
-        return res.status(400).json({ message: 'Invalid password' });
-    }
+     const passwordMatch = await bcrypt.compare(password, user.password);
+     if (!passwordMatch) {
+          return res.status(400).json({ message: 'Invalid password' });
+     }
 
-    const token = jwt.sign({ username: user.username }, JWT_SECRET, { expiresIn: '1h' });
-    res.status(200).json({ message: 'Login successful', token });
+     // Insertion du rôle dans le JWT
+     const token = jwt.sign({ username: user.username, role: user.role }, JWT_SECRET);
+     res.status(200).json({ message: 'Login successful', token });
 });
+
 
 // Example protected route
 app.get('/ussd/protected', (req, res) => {
-    const token = req.headers['authorization'];
+     const token = req.headers['authorization'];
 
-    if (!token) {
-        return res.status(403).json({ message: 'No token provided' });
-    }
+     if (!token) {
+          return res.status(403).json({ message: 'No token provided' });
+     }
 
-    try {
-        const decoded = jwt.verify(token, JWT_SECRET);
-        res.status(200).json({ message: `Welcome ${decoded.username}` });
-    } catch (err) {
-        res.status(401).json({ message: 'Invalid token' });
-    }
+     try {
+          const decoded = jwt.verify(token, JWT_SECRET);
+          res.status(200).json({ message: `Welcome ${decoded.username}` });
+     } catch (err) {
+          res.status(401).json({ message: 'Invalid token' });
+     }
 });
 
 app.listen(port, () => {
-    console.log(`Ndugu App Backend running on http://localhost:${port}`);
+     console.log(`Ndugu App Backend running on http://localhost:${port}`);
 });

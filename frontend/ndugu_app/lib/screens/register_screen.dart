@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -16,8 +17,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _addressController = TextEditingController();
   final _emailController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  DateTime? _selectedDate; // Stockage de la date sélectionnée
+  DateTime? _selectedDate;
   bool _isLoading = false;
+  String? _selectedRole; // To store selected role
 
   Future<void> _register() async {
     setState(() {
@@ -38,11 +40,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'address': _addressController.text,
           'email': _emailController.text,
           'confirmPassword': _confirmPasswordController.text,
+          'role': _selectedRole ?? '',
         }),
       );
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+
+        final String jwt = data['token'];
+
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('jwt', jwt);
+
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacementNamed(context, '/home');
+
         // ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, '/login');
       } else {
@@ -118,7 +130,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    // Username
                     TextField(
                       controller: _usernameController,
                       decoration: InputDecoration(
@@ -131,7 +142,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    // Password
                     TextField(
                       controller: _passwordController,
                       obscureText: true,
@@ -145,7 +155,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    // Date of Birth (Picker)
                     GestureDetector(
                       onTap: () => _selectDate(context),
                       child: Container(
@@ -169,7 +178,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    // Adresse
                     TextField(
                       controller: _addressController,
                       decoration: InputDecoration(
@@ -182,7 +190,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    // Email
                     TextField(
                       controller: _emailController,
                       decoration: InputDecoration(
@@ -195,14 +202,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    // Confirm Password
+                    DropdownButtonFormField<String>(
+                      value: _selectedRole,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.8),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      hint: const Text("Select Role"),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedRole = newValue;
+                        });
+                      },
+                      items: <String>['Client', 'Producteur']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(height: 16),
                     TextField(
                       controller: _confirmPasswordController,
                       obscureText: true,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white.withOpacity(0.8),
-                        hintText: 'Creez un mot de passe ?',
+                        hintText: 'Confirm Password',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
