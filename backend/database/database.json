@@ -6,6 +6,21 @@
             "dob": "1990-01-01",
             "address": "123 Street Name",
             "email": "test@example.com"
+        },
+        "bouba": {
+            "username": "bouba",
+            "password": "$2b$10$y8DAxu5egz6VmbAOs13X1.2imId05Q36v69dY3dasWaN.njibYJL.",
+            "dob": "2024-10-01 00:00:00.000",
+            "address": "Bambey",
+            "email": "hamoudbooba@gmail.com"
+        },
+        "Bakar": {
+            "username": "Bakar",
+            "password": "$2b$10$wMPhSPA0kPDoQ5r3zBWPUev7sxY/5mtv8iVqCgcm3YT0HWFp5nnuW",
+            "dob": "2024-10-24 00:00:00.000",
+            "address": "Thies",
+            "email": "seck@gmail.com",
+            "role": "Producteur"
         }
     }
 }
