@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../utils/auth_utils.dart';
 import 'dart:convert';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
 
@@ -36,18 +36,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        final String jwt =
-            data['token'];
+        final String jwt = data['token'];
 
         // Sauvegarde le JWT dans les shared_preferences
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('jwt', jwt);
 
-        // Redirige vers la page d'accueil
-        // ignore: use_build_context_synchronously
-        Navigator.pushReplacementNamed(context, '/home');
+        // Utilise la fonction de redirection basée sur le rôle
+        checkRoleAndRedirect(context);
       } else {
-        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
               content: Text('Nom d’utilisateur ou mot de passe incorrect')),
@@ -102,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushNamed(context, '/register');
                     },
                     child: const Text(
-                      'sign up to continue',
+                      'Sign up to continue',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white70,
@@ -150,35 +147,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           child: const Text('Se connecter'),
                         ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          // Action pour mot de passe oublié
-                        },
-                        child: const Text(
-                          'Forget Password?',
-                          style: TextStyle(
-                            color: Colors.white70,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/register');
-                        },
-                        child: const Text(
-                          'Signup!',
-                          style: TextStyle(
-                            color: Colors.white70,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../utils/auth_utils.dart';
+import 'dart:convert';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -45,14 +46,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-
         final String jwt = data['token'];
 
+        // Sauvegarde le JWT dans les shared_preferences
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('jwt', jwt);
 
-        // Vérification du rôle et redirection
-        _checkRoleAndRedirect(jwt);
+        // Utilise la fonction de redirection basée sur le rôle
+        checkRoleAndRedirect(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Erreur lors de l’inscription')),
@@ -65,45 +66,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     } finally {
       setState(() {
         _isLoading = false;
-      });
-    }
-  }
-
-  Future<void> _checkRoleAndRedirect(String token) async {
-    try {
-      final parts = token.split('.');
-      if (parts.length != 3) {
-        throw Exception('Token invalide');
-      }
-
-      final payload = parts[1];
-      final normalized = base64Url.normalize(payload);
-      final decodedPayload = utf8.decode(base64Url.decode(normalized));
-      final Map<String, dynamic> payloadMap = json.decode(decodedPayload);
-
-      // Vérifier si le rôle est 'Producteur' ou autre
-      if (payloadMap['role'] == 'Producteur') {
-        // Redirection vers la page de création de produit
-        Navigator.pushReplacementNamed(context, '/createProduct');
-      } else {
-        // Redirection vers la page d'accueil
-        Navigator.pushReplacementNamed(context, '/home');
-      }
-    } catch (e) {
-      Navigator.pushReplacementNamed(context, '/home');
-    }
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (pickedDate != null && pickedDate != _selectedDate) {
-      setState(() {
-        _selectedDate = pickedDate;
       });
     }
   }
@@ -171,29 +133,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         hintText: 'Password',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    GestureDetector(
-                      onTap: () => _selectDate(context),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 16.0, horizontal: 12.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.8),
-                          border: Border.all(
-                            color: Colors.grey,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          _selectedDate != null
-                              ? _selectedDate.toString()
-                              : 'Select Date of Birth',
-                          style: const TextStyle(
-                            color: Colors.black87,
-                          ),
                         ),
                       ),
                     ),

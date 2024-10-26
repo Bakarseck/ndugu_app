@@ -111,14 +111,34 @@ class HomeScreen extends StatelessWidget {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    productCard('Salade', 'Weight 1 kilogram',
-                        'assets/salad.png', 5.00),
                     productCard(
-                        'Coco', 'Weight 500 gram', 'assets/coconut.png', 3.00),
-                    productCard('Original Mango', 'Weight 1 kilogram',
-                        'assets/mango.png', 6.00),
+                      context,
+                      'Salade',
+                      'Weight 1 kilogram',
+                      'assets/salad.png',
+                      5.00,
+                    ),
                     productCard(
-                        'Choux', 'Weight 500 gram', 'assets/cabbage.png', 4.00),
+                      context,
+                      'Coco',
+                      'Weight 500 gram',
+                      'assets/coconut.png',
+                      3.00,
+                    ),
+                    productCard(
+                      context,
+                      'Original Mango',
+                      'Weight 1 kilogram',
+                      'assets/mango.png',
+                      6.00,
+                    ),
+                    productCard(
+                      context,
+                      'Choux',
+                      'Weight 500 gram',
+                      'assets/cabbage.png',
+                      4.00,
+                    ),
                   ],
                 ),
               ),
@@ -155,52 +175,79 @@ class HomeScreen extends StatelessWidget {
           } else if (index == 1) {
             Navigator.pushNamed(context, '/categories');
           } else if (index == 2) {
+            
           }
         },
       ),
-      
     );
   }
 
   // Product card widget
   Widget productCard(
-      String name, String weight, String imagePath, double price) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 16.0),
-      child: Container(
-        width: 160,
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(imagePath, height: 100),
-            const SizedBox(height: 10),
-            Text(name,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            Text(weight, style: const TextStyle(color: Colors.grey)),
-            const SizedBox(height: 10),
-            Text('\$$price',
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.remove),
-                  onPressed: () {},
+    BuildContext context,
+    String name,
+    String weight,
+    String imagePath,
+    double price,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          '/detailProduct',
+          arguments: {
+            'name': name,
+            'weight': weight,
+            'imagePath': imagePath,
+            'price': price,
+          },
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(right: 16.0),
+        child: Container(
+          width: 160,
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(imagePath, height: 100),
+              const SizedBox(height: 10),
+              Text(
+                name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
-                IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: () {},
+              ),
+              Text(weight, style: const TextStyle(color: Colors.grey)),
+              const SizedBox(height: 10),
+              Text(
+                '\$$price',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
                 ),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.remove),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
