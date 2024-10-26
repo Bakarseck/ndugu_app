@@ -5,6 +5,7 @@ class DetailProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Récupération des données passées comme arguments
     final Map<String, dynamic> product =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
@@ -30,6 +31,7 @@ class DetailProductScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Image du produit
             Center(
               child: Image.asset(
                 product['imagePath'],
@@ -37,6 +39,8 @@ class DetailProductScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
+
+            // Nom du produit
             Text(
               product['name'],
               style: const TextStyle(
@@ -44,16 +48,22 @@ class DetailProductScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+
+            // Description du produit
             const SizedBox(height: 10),
             Text(
               product['description'],
               style: const TextStyle(fontSize: 16),
             ),
+
+            // Poids du produit
             const SizedBox(height: 10),
             Text(
               product['weight'],
               style: const TextStyle(color: Colors.grey, fontSize: 18),
             ),
+
+            // Prix
             const SizedBox(height: 20),
             Text(
               '\$${product['price']} /st',
@@ -63,13 +73,69 @@ class DetailProductScreen extends StatelessWidget {
                 color: Colors.green,
               ),
             ),
+
+            // Informations de traçabilité
+            const SizedBox(height: 30),
+            const Text(
+              'Traceability Details',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Row(
+              children: [
+                Icon(Icons.location_on, color: Colors.green),
+                SizedBox(width: 10),
+                Text(
+                  'Production Location: Dakar, Senegal',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            const Row(
+              children: [
+                Icon(Icons.date_range, color: Colors.green),
+                SizedBox(width: 10),
+                Text(
+                  'Harvest Date: 2023-09-15',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            const Row(
+              children: [
+                Icon(Icons.confirmation_number, color: Colors.green),
+                SizedBox(width: 10),
+                Text(
+                  'Lot Number: A23BC45',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            const Row(
+              children: [
+                Icon(Icons.verified, color: Colors.green),
+                SizedBox(width: 10),
+                Text(
+                  'Certifications: Organic, Fair Trade',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
           ],
         ),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            // Logique pour ajouter au panier
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.green,
             padding: const EdgeInsets.symmetric(vertical: 16),
