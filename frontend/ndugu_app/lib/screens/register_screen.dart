@@ -7,7 +7,6 @@ class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
@@ -19,7 +18,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _confirmPasswordController = TextEditingController();
   DateTime? _selectedDate;
   bool _isLoading = false;
-  String? _selectedRole; // To store selected role
+  String? _selectedRole;
 
   Future<void> _register() async {
     setState(() {
@@ -52,13 +51,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('jwt', jwt);
 
-        // ignore: use_build_context_synchronously
-        Navigator.pushReplacementNamed(context, '/home');
-
-        // ignore: use_build_context_synchronously
-        Navigator.pushReplacementNamed(context, '/login');
+        // Vérification du rôle et redirection
+        _checkRoleAndRedirect(jwt);
       } else {
-        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Erreur lors de l’inscription')),
         );
@@ -71,6 +66,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {
         _isLoading = false;
       });
+    }
+  }
+
+  Future<void> _checkRoleAndRedirect(String token) async {
+    try {
+      final parts = token.split('.');
+      if (parts.length != 3) {
+        throw Exception('Token invalide');
+      }
+
+      final payload = parts[1];
+      final normalized = base64Url.normalize(payload);
+      final decodedPayload = utf8.decode(base64Url.decode(normalized));
+      final Map<String, dynamic> payloadMap = json.decode(decodedPayload);
+
+      // Vérifier si le rôle est 'Producteur' ou autre
+      if (payloadMap['role'] == 'Producteur') {
+        // Redirection vers la page de création de produit
+        Navigator.pushReplacementNamed(context, '/createProduct');
+      } else {
+        // Redirection vers la page d'accueil
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    } catch (e) {
+      Navigator.pushReplacementNamed(context, '/home');
     }
   }
 
