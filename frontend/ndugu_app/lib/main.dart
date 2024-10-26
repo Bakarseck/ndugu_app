@@ -4,6 +4,7 @@ import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/categories_screen.dart';
+import 'screens/create_product_screen.dart';
 
 void main() {
   runApp(const NduguApp());
@@ -24,6 +25,7 @@ class NduguApp extends StatelessWidget {
         '/register': (context) => const RegisterScreen(),
         '/home': (context) => const HomeScreen(),
         '/categories': (context) => const CategoriesPage(),
+        '/createProduct': (context) => const ProductCreationPage()
         // '/favourites': (context) => const FavouritesPage(),
         // '/cart': (context) => const CartPage(),
       },
