@@ -10,8 +10,20 @@ class DetailProductScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(product['name']),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart, color: Colors.black),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -21,7 +33,7 @@ class DetailProductScreen extends StatelessWidget {
             Center(
               child: Image.asset(
                 product['imagePath'],
-                height: 200,
+                height: 150,
               ),
             ),
             const SizedBox(height: 20),
@@ -32,36 +44,43 @@ class DetailProductScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            const SizedBox(height: 10),
             Text(
-              product['weight'],
-              style: const TextStyle(
-                color: Colors.grey,
-                fontSize: 18,
-              ),
+              product['description'],
+              style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 10),
             Text(
-              '\$${product['price']}',
+              product['weight'],
+              style: const TextStyle(color: Colors.grey, fontSize: 18),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              '\$${product['price']} /st',
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Colors.green,
               ),
             ),
-            const SizedBox(height: 20),
-            const Text(
-              'Description',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Ce produit bio est produit dans des conditions optimales pour garantir sa qualité et sa fraîcheur.',
-              style: TextStyle(fontSize: 16),
-            ),
           ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          child: const Text(
+            'Add To Cart',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
     );

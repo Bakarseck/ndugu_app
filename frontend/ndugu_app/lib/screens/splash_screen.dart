@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ndugu_app/utils/auth_utils.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -33,7 +34,7 @@ class SplashScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          checkToken(context);
+          checkRoleAndRedirect(context);
         },
         backgroundColor: const Color(0xFF025B4E),
         child: const Icon(Icons.arrow_forward),

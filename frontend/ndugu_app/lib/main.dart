@@ -25,7 +25,7 @@ class NduguApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
-        '/home': (context) => const HomeScreen(),
+        '/home': (context) => HomeScreen(),
         '/categories': (context) => const CategoriesPage(),
         '/createProduct': (context) => const ProductCreationPage(),
         '/cart': (context) => const CartPage(),

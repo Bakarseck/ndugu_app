@@ -1,7 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  Future<void> _logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('jwt');
+
+    // ignore: use_build_context_synchronously
+    Navigator.pushReplacementNamed(context, '/login');
+  }
+
+  final List<Map<String, dynamic>> products = [
+    {
+      'name': 'Salade',
+      'weight': 'Weight 1 kilogram',
+      'imagePath': 'assets/salad.png',
+      'price': 5.00,
+      'description': 'Fresh and organic salad perfect for healthy diets.'
+    },
+    {
+      'name': 'Coco',
+      'weight': 'Weight 500 gram',
+      'imagePath': 'assets/coconut.png',
+      'price': 3.00,
+      'description': 'Delicious coconut rich in fiber and hydration.'
+    },
+    {
+      'name': 'Original Mango',
+      'weight': 'Weight 1 kilogram',
+      'imagePath': 'assets/mango.png',
+      'price': 6.00,
+      'description': 'Golden Ripe Alphonso mangoes, best for shakes and cakes.'
+    },
+    {
+      'name': 'Choux',
+      'weight': 'Weight 500 gram',
+      'imagePath': 'assets/cabbage.png',
+      'price': 4.00,
+      'description': 'Crisp cabbage, ideal for salads and coleslaw.'
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +59,14 @@ class HomeScreen extends StatelessWidget {
             icon: const Icon(Icons.shopping_cart, color: Colors.black),
             onPressed: () {},
           ),
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.black),
+            onPressed: () {
+              _logout(context);
+            },
+          ),
         ],
       ),
-
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -52,10 +97,10 @@ class HomeScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text(
                             'Buy Bio products in a',
                             style: TextStyle(
@@ -84,9 +129,9 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 20),
 
               // Welcome message
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
                     'Hello, Yaye Fatou!',
                     style: TextStyle(
@@ -108,38 +153,20 @@ class HomeScreen extends StatelessWidget {
               // Product suggestions
               SizedBox(
                 height: 250,
-                child: ListView(
+                child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  children: [
-                    productCard(
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    final product = products[index];
+                    return productCard(
                       context,
-                      'Salade',
-                      'Weight 1 kilogram',
-                      'assets/salad.png',
-                      5.00,
-                    ),
-                    productCard(
-                      context,
-                      'Coco',
-                      'Weight 500 gram',
-                      'assets/coconut.png',
-                      3.00,
-                    ),
-                    productCard(
-                      context,
-                      'Original Mango',
-                      'Weight 1 kilogram',
-                      'assets/mango.png',
-                      6.00,
-                    ),
-                    productCard(
-                      context,
-                      'Choux',
-                      'Weight 500 gram',
-                      'assets/cabbage.png',
-                      4.00,
-                    ),
-                  ],
+                      product['name'],
+                      product['weight'],
+                      product['imagePath'],
+                      product['price'],
+                      product['description'],
+                    );
+                  },
                 ),
               ),
             ],
@@ -174,8 +201,6 @@ class HomeScreen extends StatelessWidget {
             Navigator.pushNamed(context, '/home');
           } else if (index == 1) {
             Navigator.pushNamed(context, '/categories');
-          } else if (index == 2) {
-            
           }
         },
       ),
@@ -189,6 +214,7 @@ class HomeScreen extends StatelessWidget {
     String weight,
     String imagePath,
     double price,
+    String description,
   ) {
     return GestureDetector(
       onTap: () {
@@ -200,6 +226,7 @@ class HomeScreen extends StatelessWidget {
             'weight': weight,
             'imagePath': imagePath,
             'price': price,
+            'description': description,
           },
         );
       },
