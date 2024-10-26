@@ -21,6 +21,14 @@
             "address": "Thies",
             "email": "seck@gmail.com",
             "role": "Producteur"
+        },
+        "bakseck": {
+            "username": "bakseck",
+            "password": "$2b$10$jdkXmgkizSaUj8YGBcAvw.6WkWie74EA5eXbJf1YcSrLngli9C0FS",
+            "dob": "2024-10-10 00:00:00.000",
+            "address": "Medina",
+            "email": "seck.bakar@ugb.edu.sn",
+            "role": "Producteur"
         }
     }
 }
