@@ -6,6 +6,7 @@ import 'screens/home_screen.dart';
 import 'screens/categories_screen.dart';
 import 'screens/create_product_screen.dart';
 import 'screens/detail_product_screen.dart';
+import 'screens/cart_screen.dart';
 
 void main() {
   runApp(const NduguApp());
