@@ -38,7 +38,7 @@ dependencies:
   http: ^0.13.6
   shared_preferences: ^2.2.2
   shared_preferences_web: ^2.2.1
-  flutter_launcher_icons: ^0.14.1
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
