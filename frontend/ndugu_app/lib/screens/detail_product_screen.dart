@@ -5,7 +5,6 @@ class DetailProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Récupération des données passées comme arguments
     final Map<String, dynamic> product =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
@@ -74,10 +73,26 @@ class DetailProductScreen extends StatelessWidget {
               ),
             ),
 
+            // Informations Bio
+            const SizedBox(height: 30),
+            const Text(
+              'Bio Details',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'This product is 100% organic and free from pesticides. It is sourced sustainably, with minimal impact on the environment, ensuring quality and freshness.',
+              style: TextStyle(fontSize: 16),
+            ),
+
+            // Informations de traçabilité
             // Informations de traçabilité
             const SizedBox(height: 30),
             const Text(
-              'Traceability Details',
+              'Détails de traçabilité',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -89,7 +104,7 @@ class DetailProductScreen extends StatelessWidget {
                 Icon(Icons.location_on, color: Colors.green),
                 SizedBox(width: 10),
                 Text(
-                  'Production Location: Dakar, Senegal',
+                  'Lieu de production: Dakar, Senegal',
                   style: TextStyle(fontSize: 16),
                 ),
               ],
@@ -100,7 +115,7 @@ class DetailProductScreen extends StatelessWidget {
                 Icon(Icons.date_range, color: Colors.green),
                 SizedBox(width: 10),
                 Text(
-                  'Harvest Date: 2023-09-15',
+                  'Date de récolte: 2023-09-15',
                   style: TextStyle(fontSize: 16),
                 ),
               ],
@@ -111,7 +126,7 @@ class DetailProductScreen extends StatelessWidget {
                 Icon(Icons.confirmation_number, color: Colors.green),
                 SizedBox(width: 10),
                 Text(
-                  'Lot Number: A23BC45',
+                  'Numéro de lot: A23BC45',
                   style: TextStyle(fontSize: 16),
                 ),
               ],
@@ -122,7 +137,7 @@ class DetailProductScreen extends StatelessWidget {
                 Icon(Icons.verified, color: Colors.green),
                 SizedBox(width: 10),
                 Text(
-                  'Certifications: Organic, Fair Trade',
+                  'Certifications: Organique, Commerce équitable',
                   style: TextStyle(fontSize: 16),
                 ),
               ],
