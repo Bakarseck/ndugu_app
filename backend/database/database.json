@@ -29,6 +29,14 @@
             "address": "Medina",
             "email": "seck.bakar@ugb.edu.sn",
             "role": "Producteur"
+        },
+        "gabi": {
+            "username": "gabi",
+            "password": "$2b$10$LdL1sdIyzk47kQfPyIA0uuC7e.tWJDSkfsb7jC1OdaC8Y8zYjQlq.",
+            "dob": "2024-10-26 00:00:00.000",
+            "address": "medina",
+            "email": "gabi@gmail.com",
+            "role": "Producteur"
         }
     }
 }
