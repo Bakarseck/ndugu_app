@@ -201,6 +201,8 @@ class HomeScreen extends StatelessWidget {
             Navigator.pushNamed(context, '/home');
           } else if (index == 1) {
             Navigator.pushNamed(context, '/categories');
+          } else if (index == 3) {
+            Navigator.pushNamed(context, '/cart');
           }
         },
       ),

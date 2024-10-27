@@ -81,8 +81,8 @@ class ProductCreationPage extends StatelessWidget {
             Navigator.pushNamed(context, '/home');
           } else if (index == 1) {
             Navigator.pushNamed(context, '/categories');
-          } else if (index == 2) {
-            // Code pour "Favourite"
+          } else if (index == 3) {
+            Navigator.pushNamed(context, '/cart');
           }
         },
       ),

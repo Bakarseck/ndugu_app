@@ -139,7 +139,7 @@ class CategoriesPage extends StatelessWidget {
           } else if (index == 2) {
             // Redirection vers les favoris
           } else if (index == 3) {
-            // Redirection vers le panier
+            Navigator.pushNamed(context, '/cart');
           }
         },
       ),
