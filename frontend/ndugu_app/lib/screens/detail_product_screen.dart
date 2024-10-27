@@ -122,14 +122,11 @@ class DetailProductScreen extends StatelessWidget {
 
             // QR Code
             Center(
-              child: QrImage(
+              QrImageView(
                 data: traceabilityInfo,
                 version: QrVersions.auto,
-                size: 200.0,
                 embeddedImage: AssetImage('assets/icon.png'),
-                embeddedImageStyle: QrEmbeddedImageStyle(
-                  size: const Size(40, 40),
-                ),
+                size: 200.0,
               ),
             ),
           ],
