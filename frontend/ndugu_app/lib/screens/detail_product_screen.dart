@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class DetailProductScreen extends StatelessWidget {
   const DetailProductScreen({super.key});
@@ -7,6 +8,14 @@ class DetailProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, dynamic> product =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+
+    final traceabilityInfo = '''
+    Lieu de production: Dakar, Senegal
+    Date de récolte: 2023-09-15
+    Numéro de lot: A23BC45
+    Certifications: Organique, Commerce équitable
+    ''';
 
     return Scaffold(
       appBar: AppBar(
@@ -25,7 +34,7 @@ class DetailProductScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,35 +64,6 @@ class DetailProductScreen extends StatelessWidget {
               style: const TextStyle(fontSize: 16),
             ),
 
-            // Poids du produit
-            const SizedBox(height: 10),
-            Text(
-              product['weight'],
-              style: const TextStyle(color: Colors.grey, fontSize: 18),
-            ),
-
-            // Prix
-            const SizedBox(height: 20),
-            Text(
-              '\$${product['price']} /st',
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.green,
-              ),
-            ),
-
-            // Informations Bio
-            const SizedBox(height: 30),
-            const Text(
-              'Bio Details',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            // Informations de traçabilité
             // Informations de traçabilité
             const SizedBox(height: 30),
             const Text(
@@ -137,6 +117,21 @@ class DetailProductScreen extends StatelessWidget {
                 ),
               ],
             ),
+
+            const SizedBox(height: 30),
+
+            // QR Code
+            Center(
+              child: QrImage(
+                data: traceabilityInfo,
+                version: QrVersions.auto,
+                size: 200.0,
+                embeddedImage: AssetImage('assets/icon.png'),
+                embeddedImageStyle: QrEmbeddedImageStyle(
+                  size: const Size(40, 40),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -144,7 +139,7 @@ class DetailProductScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: ElevatedButton(
           onPressed: () {
-            // Logique pour ajouter au panier
+            Navigator.pushNamed(context, '/cart');
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.green,
