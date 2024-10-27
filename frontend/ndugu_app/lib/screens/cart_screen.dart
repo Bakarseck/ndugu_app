@@ -10,15 +10,15 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   List<Map<String, dynamic>> cartItems = [
     {
-      'name': 'Carrot',
-      'image': 'assets/carrot.png',
-      'quantity': 2,
-      'price': 1.00,
+      'name': 'Salade',
+      'weight': 'Weight 1 kilogram',
+      'image': 'assets/salad.png',
+      'price': 5.00,
     },
     {
-      'name': 'Orginal Mango',
-      'image': 'assets/mango.png',
-      'quantity': 3,
+      'name': 'Coco',
+      'weight': 'Weight 500 gram',
+      'image': 'assets/coconut.png',
       'price': 3.00,
     },
   ];
@@ -109,6 +109,26 @@ class _CartPageState extends State<CartPage> {
                   ),
                 ),
               ],
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: () {},
+              icon: Image.asset(
+                'assets/wave.png', // Assurez-vous que le fichier est bien présent dans assets
+                width: 30,
+                height: 30,
+              ),
+              label: const Text(
+                'Payer avec Wave',
+                style: TextStyle(fontSize: 18),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
