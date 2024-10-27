@@ -82,11 +82,6 @@ class DetailProductScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 10),
-            const Text(
-              'This product is 100% organic and free from pesticides. It is sourced sustainably, with minimal impact on the environment, ensuring quality and freshness.',
-              style: TextStyle(fontSize: 16),
-            ),
 
             // Informations de traçabilité
             // Informations de traçabilité
