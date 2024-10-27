@@ -3,18 +3,31 @@ import 'package:flutter/material.dart';
 class CategoryCard extends StatelessWidget {
   final String name;
   final String imagePath;
+  final Color backgroundColor;
 
-  const CategoryCard({super.key, required this.name, required this.imagePath});
+  const CategoryCard({
+    super.key,
+    required this.name,
+    required this.imagePath,
+    this.backgroundColor = Colors.white,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(imagePath, height: 100),
-          const SizedBox(height: 10),
-          Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
+          Image.asset(imagePath, height: 80),
+          const SizedBox(height: 8),
+          Text(
+            name,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
         ],
       ),
     );
