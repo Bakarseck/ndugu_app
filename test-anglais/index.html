@@ -87,6 +87,29 @@
             font-weight: bold;
             margin-top: 15px;
         }
+
+        /* Style du toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            font-size: 16px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, bottom 0.5s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            bottom: 40px;
+        }
     </style>
 </head>
 <body>
@@ -101,6 +124,7 @@
                 <label><input type="radio" name="answer" value="3"> <span></span></label>
             </div>
             <button type="submit">Valider</button>
+            <div id="toast" class="toast"></div>
         </form>
         <p id="result"></p>
     </div>
@@ -149,26 +173,34 @@
             return "Novice ❌";
         }
 
+               function showToast(message, isCorrect) {
+            const toast = document.getElementById("toast");
+            toast.innerText = message;
+            toast.style.backgroundColor = isCorrect ? "#2ecc71" : "#e74c3c"; // Vert si correct, rouge sinon
+            toast.classList.add("show");
+
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 1500); // Disparaît après 1,5 seconde
+        }
+
         document.getElementById("testForm").addEventListener("submit", function(event) {
             event.preventDefault();
             const selected = document.querySelector('input[name="answer"]:checked');
 
             if (!selected) {
-                document.getElementById("result").innerText = "❌ Veuillez choisir une réponse.";
+                showToast("❌ Veuillez choisir une réponse.", false);
                 return;
             }
 
             if (parseInt(selected.value) === questions[currentQuestion].correct) {
-                document.getElementById("result").innerText = "✅ Correct!";
-                document.getElementById("result").style.color = "#2ecc71";
+                showToast("✅ Correct !", true);
                 score++;
             } else {
-                document.getElementById("result").innerText = "❌ Incorrect.";
-                document.getElementById("result").style.color = "#e74c3c";
+                showToast("❌ Incorrect.", false);
             }
 
             setTimeout(() => {
-                document.getElementById("result").innerText = ""; // Efface le message
                 if (currentQuestion < questions.length - 1) {
                     currentQuestion++;
                     loadQuestion();
@@ -176,7 +208,7 @@
                     document.getElementById("question").innerText = `🎯 Test terminé ! Votre score : ${score}/20`;
                     document.getElementById("testForm").innerHTML = `<h2>Niveau obtenu : ${getLevel(score)}</h2>`;
                 }
-            }, 1500); // Temps avant de passer à la question suivante
+            }, 1500);
         });
 
         loadQuestion();
