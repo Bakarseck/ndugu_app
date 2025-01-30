@@ -3,34 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test d'Anglais</title>
+    <title>Test d'Anglais - Niveau Progressif</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #2c3e50, #4ca1af);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 25px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .options {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .options label {
+            display: block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .options input {
+            margin-right: 10px;
+        }
+
+        .options label:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        button {
+            background: #f39c12;
+            color: white;
+            font-size: 16px;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #e67e22;
+        }
+
+        #result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Test Rapide en Anglais</h1>
-    <p>Quelle est la traduction correcte de : "I didn't find five people" ?</p>
-    <form id="testForm">
-        <label><input type="radio" name="answer" value="1"> Je ne trouve pas cinq personnes</label><br>
-        <label><input type="radio" name="answer" value="2"> Mais je n’ai pas trouvé cinq personnes</label><br>
-        <label><input type="radio" name="answer" value="3"> J’ai trouvé cinq personnes</label><br>
-        <button type="submit">Valider</button>
-    </form>
-
-    <p id="result"></p>
+    <div class="container">
+        <h1>Test d'Anglais - Niveau Progressif</h1>
+        <p id="question"></p>
+        <form id="testForm">
+            <div class="options">
+                <label><input type="radio" name="answer" value="0"> <span></span></label>
+                <label><input type="radio" name="answer" value="1"> <span></span></label>
+                <label><input type="radio" name="answer" value="2"> <span></span></label>
+                <label><input type="radio" name="answer" value="3"> <span></span></label>
+            </div>
+            <button type="submit">Valider</button>
+        </form>
+        <p id="result"></p>
+    </div>
 
     <script>
+        const questions = [
+            { q: "What is the correct translation of 'Bonjour'?", choices: ["Hello", "Goodbye", "Thank you", "Please"], correct: 0 },
+            { q: "What is the plural of 'child'?", choices: ["Childs", "Children", "Childrens", "Childes"], correct: 1 },
+            { q: "Which sentence is correct?", choices: ["He go to school", "He goes to school", "He goed to school", "He gone to school"], correct: 1 },
+            { q: "Choose the correct verb: 'She ___ coffee every morning.'", choices: ["drink", "drinks", "drinking", "drunk"], correct: 1 },
+            { q: "What is the past tense of 'eat'?", choices: ["Eated", "Ate", "Eating", "Eats"], correct: 1 },
+            { q: "What does 'I am fond of' mean?", choices: ["I hate", "I like", "I am tired of", "I am angry"], correct: 1 },
+            { q: "Choose the correct form: 'I have never ___ to Japan.'", choices: ["be", "was", "been", "being"], correct: 2 },
+            { q: "Select the correct sentence:", choices: ["She don't like pizza", "She doesn't like pizza", "She didn't likes pizza", "She no like pizza"], correct: 1 },
+            { q: "Which word is an adjective?", choices: ["Run", "Happy", "Slowly", "Jump"], correct: 1 },
+            { q: "What is the opposite of 'cheap'?", choices: ["Expensive", "Small", "Big", "Cold"], correct: 0 },
+            { q: "What is the comparative form of 'good'?", choices: ["Gooder", "More good", "Better", "Best"], correct: 2 },
+            { q: "What is the past participle of 'write'?", choices: ["Wrote", "Written", "Writing", "Writed"], correct: 1 },
+            { q: "What does 'I am over the moon' mean?", choices: ["I am sad", "I am very happy", "I am tired", "I am confused"], correct: 1 },
+            { q: "Which is a synonym for 'huge'?", choices: ["Tiny", "Small", "Big", "Narrow"], correct: 2 },
+            { q: "What is the correct word: 'He is ___ than me'?", choices: ["More taller", "Tall", "Taller", "Most tall"], correct: 2 },
+            { q: "Choose the correct phrasal verb: 'He ___ up smoking.'", choices: ["Took", "Gave", "Made", "Put"], correct: 1 },
+            { q: "Which sentence is correct?", choices: ["I wish I was taller", "I wish I am taller", "I wish I taller", "I wish I be taller"], correct: 0 },
+            { q: "What is the superlative form of 'interesting'?", choices: ["More interesting", "Most interesting", "Interestinger", "Interest"], correct: 1 },
+            { q: "What does 'hit the books' mean?", choices: ["To read books", "To start studying", "To break books", "To write a book"], correct: 1 },
+            { q: "Which one is a conditional sentence?", choices: ["If I study, I will pass.", "I am studying now.", "Study is important.", "I will study tomorrow."], correct: 0 }
+        ];
+
+        let currentQuestion = 0;
+
+        function loadQuestion() {
+            document.getElementById("question").innerText = questions[currentQuestion].q;
+            document.querySelectorAll(".options label").forEach((label, index) => {
+                label.querySelector("input").value = index;
+                label.querySelector("span").innerText = questions[currentQuestion].choices[index];
+            });
+        }
+
         document.getElementById("testForm").addEventListener("submit", function(event) {
             event.preventDefault();
-            const answer = document.querySelector('input[name="answer"]:checked');
-            if (answer) {
-                if (answer.value === "2") {
-                    document.getElementById("result").innerText = "✅ Bonne réponse !";
-                } else {
-                    document.getElementById("result").innerText = "❌ Mauvaise réponse, réessayez.";
-                }
+            const selected = document.querySelector('input[name="answer"]:checked');
+            if (selected && parseInt(selected.value) === questions[currentQuestion].correct) {
+                document.getElementById("result").innerText = "✅ Correct!";
             } else {
-                document.getElementById("result").innerText = "❌ Veuillez choisir une réponse.";
+                document.getElementById("result").innerText = "❌ Incorrect.";
+            }
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                setTimeout(loadQuestion, 1000);
+            } else {
+                document.getElementById("result").innerText = "🎉 Test terminé!";
             }
         });
+
+        loadQuestion();
     </script>
 </body>
 </html>
