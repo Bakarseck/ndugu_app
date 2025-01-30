@@ -129,7 +129,8 @@
             { q: "Which one is a conditional sentence?", choices: ["If I study, I will pass.", "I am studying now.", "Study is important.", "I will study tomorrow."], correct: 0 }
         ];
 
-        let currentQuestion = 0;
+               let currentQuestion = 0;
+        let score = 0;
 
         function loadQuestion() {
             document.getElementById("question").innerText = questions[currentQuestion].q;
@@ -137,22 +138,45 @@
                 label.querySelector("input").value = index;
                 label.querySelector("span").innerText = questions[currentQuestion].choices[index];
             });
+            document.getElementById("result").innerText = ""; // Efface le message précédent
+        }
+
+        function getLevel(score) {
+            if (score >= 18) return "Expert 🎓";
+            if (score >= 14) return "Avancé 🔥";
+            if (score >= 10) return "Intermédiaire ✅";
+            if (score >= 6) return "Débutant 🟡";
+            return "Novice ❌";
         }
 
         document.getElementById("testForm").addEventListener("submit", function(event) {
             event.preventDefault();
             const selected = document.querySelector('input[name="answer"]:checked');
-            if (selected && parseInt(selected.value) === questions[currentQuestion].correct) {
+
+            if (!selected) {
+                document.getElementById("result").innerText = "❌ Veuillez choisir une réponse.";
+                return;
+            }
+
+            if (parseInt(selected.value) === questions[currentQuestion].correct) {
                 document.getElementById("result").innerText = "✅ Correct!";
+                document.getElementById("result").style.color = "#2ecc71";
+                score++;
             } else {
                 document.getElementById("result").innerText = "❌ Incorrect.";
+                document.getElementById("result").style.color = "#e74c3c";
             }
-            if (currentQuestion < questions.length - 1) {
-                currentQuestion++;
-                setTimeout(loadQuestion, 1000);
-            } else {
-                document.getElementById("result").innerText = "🎉 Test terminé!";
-            }
+
+            setTimeout(() => {
+                document.getElementById("result").innerText = ""; // Efface le message
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    loadQuestion();
+                } else {
+                    document.getElementById("question").innerText = `🎯 Test terminé ! Votre score : ${score}/20`;
+                    document.getElementById("testForm").innerHTML = `<h2>Niveau obtenu : ${getLevel(score)}</h2>`;
+                }
+            }, 1500); // Temps avant de passer à la question suivante
         });
 
         loadQuestion();
