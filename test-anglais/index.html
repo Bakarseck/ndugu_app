@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test d'Anglais</title>
+</head>
+<body>
+    <h1>Test Rapide en Anglais</h1>
+    <p>Quelle est la traduction correcte de : "I didn't find five people" ?</p>
+    <form id="testForm">
+        <label><input type="radio" name="answer" value="1"> Je ne trouve pas cinq personnes</label><br>
+        <label><input type="radio" name="answer" value="2"> Mais je n’ai pas trouvé cinq personnes</label><br>
+        <label><input type="radio" name="answer" value="3"> J’ai trouvé cinq personnes</label><br>
+        <button type="submit">Valider</button>
+    </form>
+
+    <p id="result"></p>
+
+    <script>
+        document.getElementById("testForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const answer = document.querySelector('input[name="answer"]:checked');
+            if (answer) {
+                if (answer.value === "2") {
+                    document.getElementById("result").innerText = "✅ Bonne réponse !";
+                } else {
+                    document.getElementById("result").innerText = "❌ Mauvaise réponse, réessayez.";
+                }
+            } else {
+                document.getElementById("result").innerText = "❌ Veuillez choisir une réponse.";
+            }
+        });
+    </script>
+</body>
+</html>
